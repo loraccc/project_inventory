@@ -38,4 +38,12 @@ def user_login(request):
 def user_registration(request):
     form= userregistrationform()
     context={"form": form}
+    if request.method=="post":
+        user=appuser()
+        user.full_name=request.post["full_name"]
+        user.email=request.post["email"]
+        user.contact=request.post["contact"]
+        user.password=request.post["password"]
+        user.save()
+
     return render(request,"items/registration.html",context) 
