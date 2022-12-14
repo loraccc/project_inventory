@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+Item | CREATE
+{% endblock %}
+
+{% block body_content %}
+<div class="container">
+    <h1>Item Create | INVENTORY</h1>
+    <hr>
+    <div class="card">
+        <div class="card-header">
+            <h4>Item Detail</h4>
+        </div>
+        <div class="card-body">
+            <form action="% url 'create form'%" method="post">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+                <input type="submit" class="btn btn-primary" value="ADD ITEM">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

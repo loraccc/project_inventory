@@ -13,7 +13,7 @@ class items(models.Model):
     title=models.CharField(max_length=100)
     particulars=models.CharField(max_length=200)
     lf=models.CharField(max_length=100,null=True,blank=True)
-    quantity=models.IntegerField(max_length=50)
+    quantity=models.IntegerField()
     price=models.FloatField(max_length=200)
     total=models.FloatField(max_length=200)
     added_at=models.DateTimeField(null=True,blank=True)
