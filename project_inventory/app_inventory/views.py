@@ -35,8 +35,8 @@ def user_login(request):
     context={"form": form}
     return render(request,"users/login.html",context)
     
-def user_register(request):
-    form= userregisterform()
+def user_registration(request):
+    form= userregistrationform()
     context={"form": form}
     if request.method=="POST":
         user=appuser()
