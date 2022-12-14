@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import Itemcreateform, userregistrationform, userloginform
 from datetime import datetime
-from .models import item,appuser
+from .models import Item,appuser
 
 # Create your views here.
 def item_index(request):
@@ -14,7 +14,7 @@ def item_show(request):
 def item_create(request):
     form= Itemcreateform()
     context={"form": form}
-    if request.method=="post":
+    if request.method == "POST":
         item=Item()
         user=appuser.objects.get(id=1)
         item.title= request.POST.get("title")
@@ -24,26 +24,26 @@ def item_create(request):
         item.quantity=request.POST.get("quantity")
         item.total=request.POST.get("total")
         item.added_at=datetime.now()
-        item.user=save
+        item.user=user
         item.save()
 
-        # item=Item(title=title,)
+        # OR - item=Item(title=title,particular=particular)
     return render(request,"items/create.html",context) 
 
 def user_login(request):
     form= userloginform()
     context={"form": form}
-    return render(request,"items/login.html",context)
+    return render(request,"users/login.html",context)
     
-def user_registration(request):
-    form= userregistrationform()
+def user_register(request):
+    form= userregisterform()
     context={"form": form}
-    if request.method=="post":
+    if request.method=="POST":
         user=appuser()
-        user.full_name=request.post["full_name"]
-        user.email=request.post["email"]
-        user.contact=request.post["contact"]
-        user.password=request.post["password"]
+        user.full_name=request.POST["full_name"]
+        user.email=request.POST["email"]
+        user.contact=request.POST["contact"]
+        user.password=request.POST["password"]
         user.save()
 
-    return render(request,"items/registration.html",context) 
+    return render(request,"users/register.html",context) 
