@@ -1,34 +1,59 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .forms import Itemcreateform, userregistrationform, userloginform
 from datetime import datetime
-from .models import Item,appuser
+from .models import items,appuser
 
 # Create your views here.
 def item_index(request):
-    return render(request,"items/index.html") 
-def item_edit(request):
+    item_list=items.objects.all()
+    context={"item_list": item_list}
+    return render(request,"items/index.html",context) 
+def item_edit(request,id):
     return render(request,"items/edit.html") 
-def item_show(request):
-    return render(request,"items/show.html") 
+def item_show(request,id):
+    data= items.objects.get(id=id)
+    context={"data":data}
+    return render(request,"items/show.html",context)
+def item_delete(request,id):
+    data= items.objects.get(id=id)
+    data.delete()
+    return redirect("items.index") 
+def item_update(request):
+     if request.method == "POST":
+        item_obj=items.objects.get(id=request.POST.get("id"))
+        user=appuser.objects.get(id=1)
+        item_obj.title= request.POST.get("title")
+        item_obj.particulars=request.POST.get("particulars")
+        item_obj.lf=request.POST.get("lf")
+        item_obj.price=request.POST.get("price")
+        item_obj.quantity=request.POST.get("quantity")
+        item_obj.total=request.POST.get("total")
+        item_obj.added_at=datetime.now()
+        item_obj.user=user
+        item_obj.save()
+    
+    return redirect("items.index")
 
 def item_create(request):
     form= Itemcreateform()
     context={"form": form}
     if request.method == "POST":
-        item=Item()
+        item_obj=items()
         user=appuser.objects.get(id=1)
-        item.title= request.POST.get("title")
-        item.particular=request.POST.get("particular")
-        item.lf=request.POST.get("lf")
-        item.price=request.POST.get("price")
-        item.quantity=request.POST.get("quantity")
-        item.total=request.POST.get("total")
-        item.added_at=datetime.now()
-        item.user=user
-        item.save()
+        item_obj.title= request.POST.get("title")
+        item_obj.particulars=request.POST.get("particulars")
+        item_obj.lf=request.POST.get("lf")
+        item_obj.price=request.POST.get("price")
+        item_obj.quantity=request.POST.get("quantity")
+        item_obj.total=request.POST.get("total")
+        item_obj.added_at=datetime.now()
+        item_obj.user=user
+        item_obj.save()
 
-        # OR - item=Item(title=title,particular=particular)
+        # OR - item_obj=Item(title=title,particular=particular)
     return render(request,"items/create.html",context) 
+
+
 
 def user_login(request):
     form= userloginform()
